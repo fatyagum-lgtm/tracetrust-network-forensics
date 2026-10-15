@@ -12,7 +12,7 @@ jobs:
       matrix:
         mode: [Debug, Release, Sanitizers]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install build tools
         run: sudo apt-get update && sudo apt-get install -y g++ cmake ninja-build libssl-dev python3
       - name: Configure
@@ -32,7 +32,7 @@ jobs:
   quality-and-ui:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: sudo apt-get update && sudo apt-get install -y g++ cmake ninja-build libssl-dev python3-venv cppcheck
       - name: Development tools
         run: |
