@@ -1,0 +1,7 @@
+#pragma once
+#include <string_view>
+namespace tracetrust::assets {
+inline constexpr std::string_view html = R"TT_HTML(@DASHBOARD_HTML@)TT_HTML";
+inline constexpr std::string_view css = R"TT_CSS(@DASHBOARD_CSS@)TT_CSS";
+inline constexpr std::string_view js = R"TT_JS(@DASHBOARD_JS@)TT_JS";
+}

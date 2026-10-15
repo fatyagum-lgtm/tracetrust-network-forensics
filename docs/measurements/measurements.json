@@ -1,0 +1,123 @@
+{
+  "environment": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_count_visible": 9,
+    "python": "3.12.14",
+    "analyzer": "TraceTrust 1.0.0",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "method": "Release CLI, SHA-256 + parsing + aggregation + rules + full JSON/HTML export + fsync. One warm-up per size; repeated file reads can be cached. Per-child Linux wait4 ru_maxrss in KiB.",
+    "workload": "100 fixed UDP tuples, 100-microsecond spacing, 108-byte synthetic payload, 2 documentation IPv4 addresses; no network traffic sent.",
+    "caveat": "Single shared container and narrow synthetic workload. Not throughput, security accuracy, cold-cache performance, or a comparison with another tool."
+  },
+  "runs": [
+    {
+      "repetition": 1,
+      "packets": 1000,
+      "flows": 100,
+      "wall_seconds": 0.023064982000050804,
+      "peak_rss_kib": 18512,
+      "user_seconds": 0.019086,
+      "system_seconds": 0.003888,
+      "capture_bytes": 166024,
+      "report_json_bytes": 779184,
+      "dashboard_bytes": 599318
+    },
+    {
+      "repetition": 2,
+      "packets": 1000,
+      "flows": 100,
+      "wall_seconds": 0.021725238000044556,
+      "peak_rss_kib": 19408,
+      "user_seconds": 0.021616,
+      "system_seconds": 0.0,
+      "capture_bytes": 166024,
+      "report_json_bytes": 779184,
+      "dashboard_bytes": 599318
+    },
+    {
+      "repetition": 3,
+      "packets": 1000,
+      "flows": 100,
+      "wall_seconds": 0.024614816999928735,
+      "peak_rss_kib": 19408,
+      "user_seconds": 0.017077,
+      "system_seconds": 0.007437,
+      "capture_bytes": 166024,
+      "report_json_bytes": 779184,
+      "dashboard_bytes": 599318
+    },
+    {
+      "repetition": 1,
+      "packets": 10000,
+      "flows": 100,
+      "wall_seconds": 0.19320979799999805,
+      "peak_rss_kib": 67396,
+      "user_seconds": 0.148369,
+      "system_seconds": 0.044718,
+      "capture_bytes": 1660024,
+      "report_json_bytes": 7020778,
+      "dashboard_bytes": 5013912
+    },
+    {
+      "repetition": 2,
+      "packets": 10000,
+      "flows": 100,
+      "wall_seconds": 0.17261554199990314,
+      "peak_rss_kib": 67312,
+      "user_seconds": 0.147235,
+      "system_seconds": 0.025174,
+      "capture_bytes": 1660024,
+      "report_json_bytes": 7020778,
+      "dashboard_bytes": 5013912
+    },
+    {
+      "repetition": 3,
+      "packets": 10000,
+      "flows": 100,
+      "wall_seconds": 0.17062052799997218,
+      "peak_rss_kib": 67312,
+      "user_seconds": 0.158669,
+      "system_seconds": 0.011772999999999999,
+      "capture_bytes": 1660024,
+      "report_json_bytes": 7020778,
+      "dashboard_bytes": 5013912
+    },
+    {
+      "repetition": 1,
+      "packets": 50000,
+      "flows": 100,
+      "wall_seconds": 1.1441222039998138,
+      "peak_rss_kib": 317704,
+      "user_seconds": 1.018212,
+      "system_seconds": 0.12572999999999998,
+      "capture_bytes": 8300024,
+      "report_json_bytes": 34901795,
+      "dashboard_bytes": 24774673
+    },
+    {
+      "repetition": 2,
+      "packets": 50000,
+      "flows": 100,
+      "wall_seconds": 1.1576164850000623,
+      "peak_rss_kib": 317784,
+      "user_seconds": 1.03241,
+      "system_seconds": 0.125045,
+      "capture_bytes": 8300024,
+      "report_json_bytes": 34901795,
+      "dashboard_bytes": 24774673
+    },
+    {
+      "repetition": 3,
+      "packets": 50000,
+      "flows": 100,
+      "wall_seconds": 1.1623468820000653,
+      "peak_rss_kib": 317820,
+      "user_seconds": 1.017518,
+      "system_seconds": 0.14432899999999999,
+      "capture_bytes": 8300024,
+      "report_json_bytes": 34901795,
+      "dashboard_bytes": 24774673
+    }
+  ]
+}

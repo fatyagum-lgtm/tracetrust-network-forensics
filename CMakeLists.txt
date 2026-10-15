@@ -1,0 +1,50 @@
+cmake_minimum_required(VERSION 3.20)
+project(TraceTrust VERSION 1.0.0 LANGUAGES CXX)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux" OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+  message(FATAL_ERROR "TraceTrust 1.0 targets 64-bit Linux (including WSL2). Other platforms are not yet supported.")
+endif()
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+option(TRACETRUST_SANITIZERS "Enable address and undefined-behavior sanitizers" OFF)
+find_package(OpenSSL 3.0 REQUIRED COMPONENTS Crypto)
+
+add_library(tracetrust_core
+  src/capture/reader.cpp src/protocols/decoder.cpp src/flows/analysis.cpp
+  src/detection/rules.cpp src/reporting/report.cpp src/util.cpp)
+target_include_directories(tracetrust_core PUBLIC include)
+target_include_directories(tracetrust_core SYSTEM PUBLIC third_party)
+target_include_directories(tracetrust_core PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
+target_link_libraries(tracetrust_core PUBLIC OpenSSL::Crypto)
+target_compile_options(tracetrust_core PUBLIC -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
+if(TRACETRUST_SANITIZERS)
+  target_compile_options(tracetrust_core PUBLIC -fsanitize=address,undefined -fno-omit-frame-pointer)
+  target_link_options(tracetrust_core PUBLIC -fsanitize=address,undefined)
+endif()
+
+file(READ dashboard/template.html DASHBOARD_HTML)
+file(READ dashboard/style.css DASHBOARD_CSS)
+file(READ dashboard/app.js DASHBOARD_JS)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+  dashboard/template.html dashboard/style.css dashboard/app.js)
+configure_file(cmake/assets.hpp.in generated/assets.hpp @ONLY)
+
+add_executable(tracetrust src/main.cpp)
+target_link_libraries(tracetrust PRIVATE tracetrust_core)
+install(TARGETS tracetrust RUNTIME DESTINATION bin)
+
+include(CTest)
+if(BUILD_TESTING)
+  add_executable(tracetrust_tests tests/tests.cpp)
+  target_link_libraries(tracetrust_tests PRIVATE tracetrust_core)
+  foreach(group capture protocols flows rules report robustness)
+    add_test(NAME ${group} COMMAND tracetrust_tests ${group})
+  endforeach()
+  add_test(NAME cli_help COMMAND tracetrust --help)
+  add_test(NAME cli_version COMMAND tracetrust --version)
+  find_package(Python3 3.10 COMPONENTS Interpreter REQUIRED)
+  add_test(NAME cli_integration COMMAND "${Python3_EXECUTABLE}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/cli_integration.py" "$<TARGET_FILE:tracetrust>"
+    "${CMAKE_CURRENT_SOURCE_DIR}")
+endif()

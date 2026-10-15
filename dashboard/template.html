@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>TraceTrust · Network investigation</title>
+  <style>__TT_CSS__</style>
+</head>
+<body>
+<a class="skip" href="#overview">Skip to investigation</a>
+<aside class="rail">
+  <a class="brand" href="#overview" aria-label="TraceTrust overview"><svg viewBox="0 0 32 36" aria-hidden="true"><path d="M16 2 29 8v12L16 34 3 20V8Z"/><path d="M10 12h12M10 18h8M10 24h4"/></svg><span>TraceTrust<small>NETWORK FORENSICS</small></span></a>
+  <div class="nav-caption">INVESTIGATION</div>
+  <nav aria-label="Investigation views">
+    <a href="#overview"><span>01</span> Overview</a>
+    <a href="#traffic"><span>02</span> Traffic timeline</a>
+    <a href="#communications"><span>03</span> Communications</a>
+    <a href="#relationships"><span>04</span> Relationships</a>
+    <a href="#findings"><span>05</span> Findings <b id="nav-findings">0</b></a>
+    <a href="#evidence"><span>06</span> Evidence explorer</a>
+  </nav>
+  <div class="rail-foot"><span class="live-dot"></span> Offline workspace<p>Local analysis.<br>No external requests.</p><small id="tool-version"></small></div>
+</aside>
+<main>
+  <div class="topbar"><span><span class="muted">WORKSPACE /</span> CAPTURE INVESTIGATION</span><button id="download-json" class="button">↓ Export JSON</button></div>
+  <section id="overview" class="overview">
+    <div class="section-heading hero-heading"><div><div class="eyebrow">EVIDENCE INTO CONTEXT</div><h1>Network investigation<span class="accent">.</span></h1><p class="lead">Trace conversations. Examine signals. Follow the evidence.</p></div><span class="badge" id="observation-status">Loading report</span></div>
+    <div class="capture-strip"><div><span class="caption">CAPTURE FILE</span><strong id="capture-name"></strong></div><div><span class="caption">OBSERVATION START · UTC</span><strong id="capture-start" class="mono"></strong></div><div><span class="caption">CAPTURE SPAN</span><strong id="capture-duration"></strong></div><div><span class="caption">FORMAT</span><strong id="capture-format"></strong></div></div>
+    <div id="warnings" class="notice" hidden></div>
+    <div class="metrics">
+      <article class="metric"><span class="caption">OBSERVED PACKETS</span><strong id="metric-packets">—</strong><span>Complete PCAP records</span></article>
+      <article class="metric"><span class="caption">CAPTURED VOLUME</span><strong id="metric-bytes">—</strong><span>Link-layer bytes retained</span></article>
+      <article class="metric"><span class="caption">CONVERSATIONS</span><strong id="metric-flows">—</strong><span>Bidirectional tuple groups</span></article>
+      <article class="metric"><span class="caption">IP ENDPOINTS</span><strong id="metric-hosts">—</strong><span>Unique observed addresses</span></article>
+      <article class="metric signal"><span class="caption">REVIEW SIGNALS</span><strong id="metric-findings">—</strong><a href="#findings">Explainable rule findings ↗</a></article>
+    </div>
+  </section>
+  <section id="traffic" class="two-columns">
+    <article class="panel timeline-panel"><div class="panel-head"><div><div class="eyebrow">TRAFFIC PROFILE</div><h2>Activity over time</h2></div><div class="segmented" role="group" aria-label="Timeline measure"><button id="chart-packets" aria-pressed="true">Packets</button><button id="chart-bytes" aria-pressed="false">Bytes</button></div></div><div id="timeline" class="timeline-chart" aria-label="Traffic timeline"></div><div class="panel-foot"><span id="timeline-note"></span><span class="accent">Select an interval to inspect ↓</span></div></article>
+    <article class="panel"><div class="panel-head"><div><div class="eyebrow">PROTOCOL MIX</div><h2>Packet distribution</h2></div><span class="small muted">EXCLUSIVE</span></div><div id="protocols" class="protocol-list"></div><p class="panel-note">Deepest decoded transport or network layer. DNS is included in UDP.</p></article>
+  </section>
+  <section id="communications" class="section-block">
+    <div class="section-heading"><div><div class="eyebrow">COMMUNICATION ANALYSIS</div><h2>Who talked to whom</h2></div><span id="flow-count" class="small muted"></span></div>
+    <div class="panel"><div class="toolbar"><label class="search-label"><span class="visually-hidden">Search conversations</span><input id="flow-search" type="search" placeholder="Search address, protocol or flow ID…"></label><label>Protocol<select id="flow-protocol"><option value="">All protocols</option></select></label><label>Sort<select id="flow-sort"><option value="volume">Captured bytes</option><option value="packets">Packet count</option><option value="recent">Most recent</option></select></label><button id="clear-host" hidden class="button"></button></div><div class="table-scroll"><table><thead><tr><th>Flow</th><th>Endpoint A</th><th></th><th>Endpoint B</th><th>Protocol</th><th>Packets A / B</th><th>Volume</th><th>Span</th><th>Evidence</th></tr></thead><tbody id="flow-rows"></tbody></table></div><div class="pagination"><span id="flow-page-label"></span><div><button id="flow-prev" aria-label="Previous conversations">←</button><button id="flow-next" aria-label="Next conversations">→</button></div></div></div>
+    <p class="section-note">A is the first observed sender, not an inferred client. Conversations split on idle gaps; packet flags do not establish connection success.</p>
+  </section>
+  <section id="relationships" class="two-columns relationships">
+    <article class="panel"><div class="panel-head"><div><div class="eyebrow">NETWORK RELATIONSHIPS</div><h2>Communication map</h2></div><span class="key-dot">IP endpoint</span></div><div id="topology" class="topology"></div><p id="topology-note" class="panel-note"></p></article>
+    <article class="panel"><div class="panel-head"><div><div class="eyebrow">ENDPOINT ACTIVITY</div><h2>Most active hosts</h2></div></div><div id="hosts" class="host-list"></div><p class="panel-note">Sent + received captured bytes. A packet contributes to both endpoints; totals are not additive across hosts.</p></article>
+  </section>
+  <section id="findings" class="section-block">
+    <div class="section-heading"><div><div class="eyebrow">EXPLAINABLE TRIAGE</div><h2>Signals worth investigating</h2></div><span class="small muted">OBSERVATIONS, NOT VERDICTS</span></div>
+    <div class="toolbar findings-toolbar"><label>Priority<select id="finding-priority"><option value="">All priorities</option><option value="medium">Medium</option><option value="low">Low</option></select></label><label>Rule<select id="finding-rule"><option value="">All rules</option><option>TT-A</option><option>TT-B</option><option>TT-C</option><option>TT-D</option></select></label><label>Sort<select id="finding-sort"><option value="priority">Priority</option><option value="time">Observation time</option><option value="evidence">Evidence count</option></select></label><span id="finding-count" class="muted small"></span></div>
+    <div id="finding-cards" class="finding-grid"></div><div class="pagination"><span id="finding-page-label"></span><div><button id="finding-prev" aria-label="Previous findings">←</button><button id="finding-next" aria-label="Next findings">→</button></div></div>
+  </section>
+  <section id="evidence" class="section-block">
+    <div class="section-heading"><div><div class="eyebrow">TRACEABLE OBSERVATIONS</div><h2>Evidence explorer</h2></div><span class="small muted">FRAME METADATA · NO RAW PAYLOAD</span></div>
+    <div class="panel"><div class="toolbar"><label class="search-label"><span class="visually-hidden">Search packets</span><input id="packet-search" type="search" placeholder="Search frame, address, DNS name or protocol…"></label><span id="evidence-scope" class="scope">All frames</span><button id="reset-evidence" class="button" hidden>Clear selection ×</button></div><div class="table-scroll"><table><thead><tr><th>Frame</th><th>Time from start</th><th>Source → destination</th><th>Protocol</th><th>Captured</th><th>Flags / question</th><th>Observation</th></tr></thead><tbody id="packet-rows"></tbody></table></div><div class="pagination"><span id="packet-page-label"></span><div><button id="packet-prev" aria-label="Previous frames">←</button><button id="packet-next" aria-label="Next frames">→</button></div></div></div>
+  </section>
+  <section class="provenance panel"><div><div class="eyebrow">INVESTIGATION PROVENANCE</div><h2>Bound to the acquired file</h2><p>SHA-256 identifies the read bytes. It does not authenticate capture origin, clock accuracy, or chain of custody.</p><code id="capture-hash"></code></div><details><summary>Configuration, warnings & limitations</summary><p id="analysis-time"></p><pre id="configuration"></pre><ul id="limitations"></ul></details></section>
+  <footer><span>TraceTrust <span class="accent">/</span> Local evidence. Explicit assumptions.</span><span>Educational analysis · Review before sharing</span></footer>
+</main>
+<dialog id="inspector" aria-labelledby="inspector-title"><div class="inspector-head"><div><div class="eyebrow">EVIDENCE DETAIL</div><h2 id="inspector-title"></h2></div><button id="close-inspector" class="button" aria-label="Close evidence detail">×</button></div><div id="inspector-content"></div></dialog>
+<noscript><p class="notice">JavaScript is required for interactive views. The adjacent report.json contains all analysis data.</p></noscript>
+<script type="application/json" id="report-data">__TT_DATA__</script>
+<script>__TT_JS__</script>
+</body>
+</html>

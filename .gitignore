@@ -1,0 +1,10 @@
+build*/
+.venv/
+__pycache__/
+*.pyc
+reports/
+benchmark-work/
+.DS_Store
+compile_commands.json
+local-install/
+regenerated/

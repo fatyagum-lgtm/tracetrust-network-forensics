@@ -1,0 +1,14 @@
+* text=auto
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.pcap binary
+*.pcapng binary
+*.png binary
+third_party/** linguist-vendored
+examples/investigation/** linguist-generated

@@ -1,0 +1,18 @@
+{
+  "basis": "Independently specified scenario counts; not inferred from analyzer output.",
+  "baseline.pcap": {
+    "packets": 12,
+    "flows": 4,
+    "findings": 0,
+    "protocol_packets": {"TCP": 6, "UDP": 4, "ICMP": 2},
+    "dns_packets": 2
+  },
+  "investigation.pcap": {
+    "packets": 205,
+    "flows": 52,
+    "findings": 4,
+    "protocol_packets": {"TCP": 29, "UDP": 174, "ICMP": 2},
+    "dns_packets": 32,
+    "rule_packet_counts": {"TT-A": 16, "TT-B": 7, "TT-C": 140, "TT-D": 30}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "generator": "tools/generate_fixtures.py",
+  "epoch_utc": "2026-01-01T00:00:00Z",
+  "files": {
+    "baseline.pcap": {
+      "sha256": "21709bea091b14b82eb2c222b4732e9f2d5dbdd51a17fea613d3657bcfd17490",
+      "bytes": 1009
+    },
+    "investigation.pcap": {
+      "sha256": "d478a7ea6b881a30e407b51ae6698d2d6877065d4ebb5a1febd01ab53f072119",
+      "bytes": 31319
+    },
+    "big-endian-nanoseconds.pcap": {
+      "sha256": "e1e8044bac89a740d1bae574131858892bebc12ab2a1d430456983874ffc0330",
+      "bytes": 1009
+    },
+    "empty.pcap": {
+      "sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "bytes": 24
+    },
+    "damaged-tail.pcap": {
+      "sha256": "98c47d147f5f0f58ffc86142229517945a3093b2c0d4c5cb980c7557e4cce72f",
+      "bytes": 1014
+    },
+    "unsupported.pcapng": {
+      "sha256": "5840f1ad44d3acea5aad06969faeefeb1a6cfa35b2db0472285bfff080ae96d4",
+      "bytes": 28
+    }
+  }
+}
